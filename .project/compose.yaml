@@ -44,12 +44,14 @@ services:
                 - CMD-SHELL
                 - curl -f http://localhost:8888/api || exit 1
             timeout: 10s
+        image: ghcr.io/hannahhiendo/build-an-agent/devx:main
         ipc: host
         networks:
             - devx
         ports:
             - 8888:8888
         restart: always
+        user: rapids
         volumes:
             - ..:/project:cached
             - /var/run/docker.sock:/var/run/docker.sock

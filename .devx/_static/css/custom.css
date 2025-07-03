@@ -11,54 +11,56 @@
 */
 
 
-    :root {
-      --theme-color: var(--nv-black);
-      --content-max-width: 1000px;
-      --sidebar-background: #000;
-      --heading-color: var(--sidebar-headline-color);
-      --sidebar-nav-strong-color: var(--heading-color);
-      --notice-important-border-color: var(--nv-green);
-      --notice-important-background: #e8fcc6;
-      --blockquote-border-color: var(--nv-green);
-      --blockquote-background: #E8FCC6;
-      --navbar-root-color--active: var(--nv-green);
-      --search-result-item-color: #fcfcfc;
-      --docsifytabs-border-color: #ededed;
-      --docsifytabs-tab-highlight-color: #76b900;
+:root {
+  --theme-color: var(--nv-black);
+  --content-max-width: 1000px;
+  --sidebar-background: #000;
+  --heading-color: var(--sidebar-headline-color);
+  --sidebar-nav-strong-color: var(--heading-color);
+  --notice-important-border-color: var(--nv-green);
+  --notice-important-background: #e8fcc6;
+  --blockquote-border-color: var(--nv-green);
+  --blockquote-background: #E8FCC6;
+  --navbar-root-color--active: var(--nv-green);
+  --search-result-item-color: #fcfcfc;
+  --docsifytabs-border-color: #ededed;
+  --docsifytabs-tab-highlight-color: #76b900;
 
-      /* Typography
+  /* Typography
       ------------------------------------------------------------------------- */
-      /* Modular Scale */
-      --modular-scale   : 1.15;
+  /* Modular Scale */
+  --modular-scale: 1.15;
 
-      /* Module Scale Calculations (do not edit these) */
-      --modular-scale--2: calc(var(--modular-scale--1) / var(--modular-scale));
-      --modular-scale--1: calc(var(--modular-scale-1) / var(--modular-scale));
-      --modular-scale-1 : 22px;
-      --modular-scale-2 : calc(var(--modular-scale-1) * var(--modular-scale));
-      --modular-scale-3 : calc(var(--modular-scale-2) * var(--modular-scale));
-      --modular-scale-4 : calc(var(--modular-scale-3) * var(--modular-scale));
-      --modular-scale-5 : calc(var(--modular-scale-4) * var(--modular-scale));
+  /* Module Scale Calculations (do not edit these) */
+  --modular-scale--2: calc(var(--modular-scale--1) / var(--modular-scale));
+  --modular-scale--1: calc(var(--modular-scale-1) / var(--modular-scale));
+  --modular-scale-1: 22px;
+  --modular-scale-2: calc(var(--modular-scale-1) * var(--modular-scale));
+  --modular-scale-3: calc(var(--modular-scale-2) * var(--modular-scale));
+  --modular-scale-4: calc(var(--modular-scale-3) * var(--modular-scale));
+  --modular-scale-5: calc(var(--modular-scale-4) * var(--modular-scale));
 
-      /* Font size */
-      --font-size-xxxl  : var(--modular-scale-5);
-      --font-size-xxl   : var(--modular-scale-4);
-      --font-size-xl    : var(--modular-scale-3);
-      --font-size-l     : var(--modular-scale-2);
-      --font-size-m     : var(--modular-scale-1);
-      --font-size-s     : var(--modular-scale--1);
-      --font-size-xs    : var(--modular-scale--2);
+  /* Font size */
+  --font-size-xxxl: var(--modular-scale-5);
+  --font-size-xxl: var(--modular-scale-4);
+  --font-size-xl: var(--modular-scale-3);
+  --font-size-l: var(--modular-scale-2);
+  --font-size-m: var(--modular-scale-1);
+  --font-size-s: var(--modular-scale--1);
+  --font-size-xs: var(--modular-scale--2);
 
-      --body-font-size: var(--font-size-m);
-      --body-line-height: calc(1.25 * var(--body-font-size));
-    }
-    img.medium-zoom-image {
-      border: solid black 1px;
-      border-radius: 5px;
-    }
-    #main {
-      padding-top: 128px;
-    }
+  --body-font-size: var(--font-size-m);
+  --body-line-height: calc(1.25 * var(--body-font-size));
+}
+
+img.medium-zoom-image {
+  border: solid black 1px;
+  border-radius: 5px;
+}
+
+#main {
+  padding-top: 128px;
+}
 
 
 .cover {
@@ -75,7 +77,8 @@
     padding: var(--brand-spacing-xxl) var(--brand-spacing-lg) !important;
     --text-main-color: var(--brand-color-display-fg-high-primary);
 
-    h1, h2 {
+    h1,
+    h2 {
       letter-spacing: -0.25px;
       line-height: 120%;
       margin: 0px;
@@ -88,7 +91,7 @@
       font-size: var(--brand-font-sizes-ml);
       font-weight: var(--brand-font-weights-medium);
 
-      > a {
+      >a {
         text-decoration: none;
       }
     }
@@ -107,6 +110,7 @@
       display: flex;
       gap: var(--brand-spacing-md);
     }
+
     .cover-sections {
       display: flex;
       flex-direction: row;
@@ -121,9 +125,11 @@
     }
   }
 }
+
 .sidebar {
   height: 100%;
 }
+
 .sidebar-nav {
   --sidebar-font-size: var(--brand-font-sizes-ms);
   --sidebar-nav-active-border-width: var(--brand-size-xs);
@@ -173,25 +179,26 @@
       width: var(--sidebar-nav-chevron-size);
     }
   }
+
   li a[href^="#/"]:not([href*="?id="]):only-child {
     /* inactive accordion */
     padding-left: calc(var(--sidebar-nav-padding-x) + var(--sidebar-nav-active-border-width));
   }
+
   li:has(.app-sub-sidebar) {
     /* active accordion */
-    background: linear-gradient(
-      to right,
-      var(--brand-color-menu-border-selected),
-      var(--brand-color-menu-border-selected) var(--sidebar-nav-active-border-width),
-      transparent var(--sidebar-nav-active-border-width),
-      transparent
-    );
+    background: linear-gradient(to right,
+        var(--brand-color-menu-border-selected),
+        var(--brand-color-menu-border-selected) var(--sidebar-nav-active-border-width),
+        transparent var(--sidebar-nav-active-border-width),
+        transparent);
     --sidebar-nav-link-margin: 0px 0px 0px var(--sidebar-nav-active-border-width);
 
-    &:not(.collapse) > a::after {
+    &:not(.collapse)>a::after {
       transform: rotate(180deg);
     }
   }
+
   p {
     /* Overrides omni-style.css when _sidebar.md contains line breaks and renders with <p> */
     font-size: var(--sidebar-font-size);
@@ -203,6 +210,7 @@
     white-space: break-spaces;
   }
 }
+
 .search {
   /* icon background */
   --search-clear-icon-color1: transparent;
@@ -237,6 +245,7 @@
     right: var(--brand-spacing-sm);
     top: 1px;
   }
+
   .input-wrap::before {
     content: '';
     background: url(../magnifying_glass.svg);
@@ -246,6 +255,7 @@
     margin: auto;
     margin-left: var(--brand-spacing-sm);
   }
+
   .input-wrap:focus-within {
     border-width: 0px;
     border-bottom: 2px solid var(--brand-color-input-border-active);
@@ -253,7 +263,8 @@
     --search-input-background-color: var(--brand-color-input-bg-active);
   }
 
-  input, input:focus {
+  input,
+  input:focus {
     box-shadow: unset !important;
   }
 
@@ -261,5 +272,69 @@
     &:hover {
       background-color: var(--brand-color-menu-bg-hover);
     }
+  }
+}
+
+button:not(:disabled):not([class]) {
+  position: relative;
+  background: transparent;
+  border: 2px solid var(--link-color);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--link-color);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+button:not(:disabled):not([class])::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg,
+      var(--link-color),
+      #00ffff,
+      var(--link-color),
+      #ff00ff,
+      var(--link-color));
+  background-size: 400% 400%;
+  border-radius: 10px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: glowingBorder 3s ease-in-out infinite;
+}
+
+button:not(:disabled):not([class]):hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+button:not(:disabled):not([class]):hover::before {
+  opacity: 1;
+}
+
+button:disabled:not([class]) {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border: 2px solid #ccc;
+  color: #999;
+}
+
+@keyframes glowingBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
