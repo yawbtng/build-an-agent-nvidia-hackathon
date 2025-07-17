@@ -1,37 +1,19 @@
-report_planner_query_writer_instructions = """You are an expert technical writer, helping to plan a report. 
-
-The report will be focused on the following topic:
-
-{topic}
-
-The report structure will follow these guidelines:
-
-{report_organization}
-
-Your goal is to generate {number_of_queries} search queries that will help gather comprehensive information for planning the report sections. 
-
-The query should:
-
-1. Be related to the topic 
-2. Help satisfy the requirements specified in the report organization
-
-Make the query specific enough to find high-quality, relevant sources while covering the breadth needed for the report structure."""
-
+"""Prompts for the report generation agent."""
 
 # Prompt generating the report outline
 report_planner_instructions = """You are an expert technical writer, helping to plan a report.
 
-Your goal is to generate the outline of the sections of the report. 
+Your goal is to generate the outline of the sections of the report.
 
 The overall topic of the report is:
 
 {topic}
 
-The report should follow this organization: 
+The report should follow this organization:
 
 {report_organization}
 
-You should reflect on this information to plan the sections of the report: 
+You should reflect on this information to plan the sections of the report:
 
 {context}
 

@@ -1,10 +1,17 @@
-import operator
-from typing import Annotated, List, Literal, Optional, TypedDict
+"""
+Models for the report agent.
+"""
+
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
+from .researcher.models import ResearchState
+
 
 class Section(BaseModel):
+    """A section of the report."""
+
     name: str = Field(
         description="Name for this section of the report.",
     )
@@ -18,44 +25,25 @@ class Section(BaseModel):
 
 
 class Sections(BaseModel):
+    """Collection of sections of the report."""
+
     sections: List[Section] = Field(
         description="Sections of the report.",
     )
 
 
-class Queries(BaseModel):
-    queries: List[str] = Field(
-        description="List of search queries.",
-    )
+class ReportState(ResearchState):
+    """State for the report agent."""
 
-
-class ReportState(BaseModel):
     # User input
-    topic: str = Field(description="Report topic")
     report_structure: str = Field(
         description="A description of how the report should be formatted."
     )
 
-    # Tavily config
-    tavily_topic: Literal["general", "news"] = Field(
-        description="Tavily search topic", default="general"
-    )
-    tavily_days: Optional[int] = Field(
-        description="Only applicable for news topic", default=None
-    )
-    number_of_queries: int = Field(
-        description="Number of search queries to generate per section", default=5
-    )
-
-    # Researcher
-    research_plan: Optional[Queries] = Field(
-        description="List of search queries for tavily research", default=None
-    )
-    research_results: Optional[str] = Field(
-        description="Results from the research.", default=None
-    )
-
     # Report
+    discovery_results: Optional[str] = Field(
+        default=None, description="Document level research from the research agent."
+    )
     sections: list[Section] = Field(description="List of report sections", default=[])
     # completed_sections: Annotated[list, operator.add] # Send() API key
     # report_sections_from_research: str # String of any completed sections from research to write final sections

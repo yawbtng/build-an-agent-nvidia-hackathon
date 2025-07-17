@@ -3,11 +3,13 @@ Helper functions for the report generation agent.
 """
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from langchain_core.messages import BaseMessage
 from langchain_core.runnables import Runnable
-from models import Section
+
+if TYPE_CHECKING:
+    from models import Section
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -87,7 +89,7 @@ def deduplicate_and_format_sources(
     return formatted_text.strip()
 
 
-def format_sections(sections: list[Section]) -> str:
+def format_sections(sections: list["Section"]) -> str:
     """Format a list of sections into a string"""
     formatted_str = ""
     for idx, section in enumerate(sections, 1):
@@ -97,7 +99,7 @@ Section {idx}: {section.name}
 {'='*60}
 Description:
 {section.description}
-Requires Research: 
+Requires Research:
 {section.research}
 
 Content:
