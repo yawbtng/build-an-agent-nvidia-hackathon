@@ -1,111 +1,178 @@
-# Structured Report Generation
-# This script is converted from a Jupyter notebook. All markdown cells are included as comments for context.
-# To run, ensure you have all dependencies installed (see requirements.txt).
+#!/usr/bin/env python3
+"""
+Structured Report Generation
 
-# --- Prerequisites ---
-# Install dependencies: langgraph, langchain_community, langchain_core, tavily-python, langchain_nvidia_ai_endpoints
+This script generates structured reports using LangChain, NVIDIA AI, and Tavily search.
+Converted from a Jupyter notebook with all markdown cells included as comments for context.
 
-# --- API Key Setup ---
-# The script expects NVIDIA_API_KEY, LANGCHAIN_API_KEY, and TAVILY_API_KEY as environment variables.
+Prerequisites:
+- Install dependencies: langgraph, langchain_community, langchain_core, tavily-python, langchain_nvidia_ai_endpoints
+- Set environment variables: NVIDIA_API_KEY, LANGCHAIN_API_KEY, TAVILY_API_KEY
+"""
 
-import os
-import getpass
 import asyncio
-from typing import List, Optional, Literal, Annotated
-from pydantic import BaseModel, Field
-from typing_extensions import TypedDict
+from typing import List, Optional, Literal, Dict, Any, cast
 
-# Utility: Set environment variable if not already set
-def _set_env(var: str):
-    if not os.environ.get(var):
-        os.environ[var] = getpass.getpass(f"{var}: ")
-
-if not os.environ.get("NVIDIA_API_KEY", "").startswith("nvapi-"):
-    nvapi_key = getpass.getpass("Enter your NVIDIA API key: ")
-    assert nvapi_key.startswith("nvapi-"), f"{nvapi_key[:5]}... is not a valid key"
-    os.environ["NVIDIA_API_KEY"] = nvapi_key
-
-_set_env("LANGCHAIN_API_KEY")
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_PROJECT"] = "report-mAIstro"
-_set_env("TAVILY_API_KEY")
-
-# --- Tavily Client Setup ---
-from tavily import TavilyClient, AsyncTavilyClient
-tavily_client = TavilyClient()
-tavily_async_client = AsyncTavilyClient()
-
-# --- NVIDIA LLM Setup ---
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
-llm = ChatNVIDIA(model="meta/llama-3.3-70b-instruct", temperature=0)
-
-# --- Utility Classes and Functions ---
-class Section(BaseModel):
-    name: str = Field(description="Name for this section of the report.")
-    description: str = Field(description="Brief overview of the main topics and concepts to be covered in this section.")
-    research: bool = Field(description="Whether to perform web research for this section of the report.")
-    content: str = Field(description="The content of the section.")
-
+# Setup environment and initialize tools
+from tools import setup_environment, format_sections, tavily_search_async, deduplicate_and_format_sources
 from agents import (
     generate_report_plan,
     generate_section_queries,
     write_research_section,
     write_final_section,
+    Section,
+    ReportState,
 )
-from tools import format_sections
 
-async def main():
-    report_structure = """This report type focuses on a simple summary.\n\nThe report structure should include:\n1. Introduction (no research needed)\n   - Brief overview of the topic area\n\n2. Main Body Section:\n   - Summarize the main features\n\n3. Conclusion (no research needed)\n   - Final thoughts\n"""
-    report_topic = "Summarize the main features of Python."
-    tavily_topic = "general"
-    tavily_days = None
-    number_of_queries = 1
+
+async def generate_full_report(
+    report_topic: str,
+    report_structure: str,
+    tavily_topic: Literal["general", "news"] = "general",
+    tavily_days: Optional[int] = None,
+    number_of_queries: int = 1
+) -> List[Section]:
+    """
+    Generate a complete report with all sections.
+
+    Args:
+        report_topic: The main topic for the report
+        report_structure: Structure guidelines for the report
+        tavily_topic: Type of search ("general" or "news")
+        tavily_days: Number of days for news search
+        number_of_queries: Number of search queries per section
+
+    Returns:
+        List of completed Section objects
+    """
     print("Generating report plan...")
-    sections_dict = await generate_report_plan({
+
+    # Generate report plan and sections
+    # Note: We need to create a properly typed ReportState but some fields are not available yet
+    report_state: Dict[str, Any] = {
         "topic": report_topic,
         "report_structure": report_structure,
         "number_of_queries": number_of_queries,
         "tavily_topic": tavily_topic,
-        "tavily_days": tavily_days
-    })
-    sections = sections_dict['sections']
-    print("\nSections generated:")
+        "tavily_days": tavily_days,
+        "sections": [],  # Will be populated
+        "completed_sections": [],  # Will be populated
+        "report_sections_from_research": "",  # Will be populated
+        "final_report": "",  # Will be populated
+    }
+
+    sections_dict: Dict[str, List[Section]] = await generate_report_plan(cast(ReportState, report_state))
+
+    sections: List[Section] = sections_dict['sections']
+    print(f"\nGenerated {len(sections)} sections:")
     for section in sections:
         print(f"{'='*50}")
         print(f"Name: {section.name}")
         print(f"Description: {section.description}")
         print(f"Research: {section.research}")
 
-    # --- Full Report Generation ---
-    completed_sections = []
-    # 1. Write research sections
+    completed_sections: List[Section] = []
+
+    # 1. Write research sections first
+    print("\n" + "="*60)
+    print("WRITING RESEARCH SECTIONS")
+    print("="*60)
+
     for section in sections:
         if section.research:
             print(f"\nResearching and writing section: {section.name}")
-            queries = generate_section_queries(section, number_of_queries)
-            import asyncio
-            search_docs = await agents.tavily_search_async(queries, tavily_topic, tavily_days)
-            from tools import deduplicate_and_format_sources
-            sources_str = deduplicate_and_format_sources(search_docs, max_tokens_per_source=2000, include_raw_content=True)
+
+            # Generate search queries for this section
+            queries: List[str] = generate_section_queries(section, number_of_queries)
+            print(f"Generated queries: {queries}")
+
+            # Perform web search
+            search_docs: List[Dict[str, Any]] = await tavily_search_async(queries, tavily_topic, tavily_days)
+
+            # Format sources
+            sources_str: str = deduplicate_and_format_sources(
+                search_docs,
+                max_tokens_per_source=2000,
+                include_raw_content=True
+            )
+
+            # Write section content
             section.content = write_research_section(section, sources_str)
             completed_sections.append(section)
+
     # 2. Format completed research sections for context
-    completed_report_sections = format_sections(completed_sections)
+    completed_report_sections: str = format_sections(completed_sections)
+
     # 3. Write non-research sections (intro/conclusion)
+    print("\n" + "="*60)
+    print("WRITING SYNTHESIS SECTIONS")
+    print("="*60)
+
     for section in sections:
         if not section.research:
             print(f"\nSynthesizing section: {section.name}")
             section.content = write_final_section(section, completed_report_sections)
             completed_sections.append(section)
-    # 4. Compile and print the final report
-    # Sort sections to original order
-    name_to_section = {s.name: s for s in completed_sections}
-    ordered_sections = [name_to_section[s.name] for s in sections]
-    print("\n================ FINAL REPORT ================\n")
-    for section in ordered_sections:
+
+    # 4. Sort sections back to original order
+    name_to_section: Dict[str, Section] = {s.name: s for s in completed_sections}
+    ordered_sections: List[Section] = [name_to_section[s.name] for s in sections]
+
+    return ordered_sections
+
+
+def print_final_report(sections: List[Section]) -> None:
+    """Print the final report in a formatted way."""
+    print("\n" + "="*80)
+    print("FINAL REPORT")
+    print("="*80)
+
+    for section in sections:
         print(section.content)
         print("\n")
 
+
+async def main() -> None:
+    """Main function to run the report generation."""
+    # Setup environment
+    setup_environment()
+
+    # Report configuration
+    report_structure: str = """This report type focuses on a simple summary.
+
+The report structure should include:
+1. Introduction (no research needed)
+   - Brief overview of the topic area
+
+2. Main Body Section:
+   - Summarize the main features
+
+3. Conclusion (no research needed)
+   - Final thoughts
+"""
+
+    report_topic: str = "Summarize the main features of Python."
+    tavily_topic: Literal["general", "news"] = "general"
+    tavily_days: Optional[int] = None
+    number_of_queries: int = 1
+
+    try:
+        # Generate the full report
+        sections: List[Section] = await generate_full_report(
+            report_topic=report_topic,
+            report_structure=report_structure,
+            tavily_topic=tavily_topic,
+            tavily_days=tavily_days,
+            number_of_queries=number_of_queries
+        )
+
+        # Print the final report
+        print_final_report(sections)
+
+    except Exception as e:
+        print(f"Error generating report: {e}")
+        raise
+
+
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main()) 
+    asyncio.run(main())

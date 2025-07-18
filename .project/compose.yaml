@@ -31,6 +31,14 @@ services:
             - --NotebookApp.base_url=$PROXY_PREFIX
             - --NotebookApp.default_url=/lab
             - --allow-root
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - capabilities:
+                            - gpu
+                          count: all
+                          driver: nvidia
         environment:
             - RUNTIME_VAR=5
             - SHELL=/bin/bash
@@ -51,7 +59,7 @@ services:
         ports:
             - 8888:8888
         restart: always
-        user: rapids
+        user: ubuntu
         volumes:
             - ..:/project:cached
             - /var/run/docker.sock:/var/run/docker.sock

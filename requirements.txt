@@ -3,3 +3,7 @@ jupyterlab-git>=0.44.0
 jupyter-app-launcher>=0.1.0
 cachier 
 OpenAI
+langgraph
+langchain-nvidia-ai-endpoints
+pydantic
+tavily-python
