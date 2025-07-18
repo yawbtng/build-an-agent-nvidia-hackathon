@@ -1,0 +1,5 @@
+curl
+jq
+vim
+git
+git-lfs

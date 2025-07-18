@@ -1,0 +1,9 @@
+jupyterlab>=4.0.0
+jupyterlab-git>=0.44.0
+jupyter-app-launcher>=0.1.0
+black~=25.1.0
+cachier
+OpenAI
+ipywidgets>=8.0.0
+cryptography>=3.4.8
+mistune

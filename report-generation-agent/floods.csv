@@ -1,0 +1,31 @@
+Began,Ended,Location,State,Deaths,Property_Damage,Cause
+2023-01-15,2023-01-18,Harris County,Texas,5,250000000,Heavy Rain
+2023-02-03,2023-02-05,Miami-Dade County,Florida,2,150000000,Storm Surge
+2023-03-12,2023-03-14,Orleans Parish,Louisiana,8,400000000,Levee Failure
+2023-04-22,2023-04-24,San Bernardino County,California,1,75000000,Flash Flood
+2023-05-08,2023-05-10,Cook County,Illinois,3,200000000,River Overflow
+2023-06-19,2023-06-21,King County,Washington,0,50000000,Urban Flooding
+2023-07-04,2023-07-06,Maricopa County,Arizona,2,125000000,Monsoon
+2023-08-15,2023-08-17,Jefferson County,Alabama,4,175000000,Dam Failure
+2023-09-28,2023-09-30,Orange County,California,1,100000000,Coastal Flooding
+2023-10-12,2023-10-14,Broward County,Florida,6,300000000,Hurricane
+2022-01-08,2022-01-10,Clark County,Nevada,0,25000000,Flash Flood
+2022-02-14,2022-02-16,Wayne County,Michigan,3,180000000,Ice Jam
+2022-03-25,2022-03-27,Davidson County,Tennessee,7,350000000,River Flooding
+2022-04-18,2022-04-20,Tarrant County,Texas,2,120000000,Thunderstorm
+2022-05-30,2022-06-01,Suffolk County,New York,1,90000000,Coastal Storm
+2022-06-22,2022-06-24,Riverside County,California,0,60000000,Mudslide
+2022-07-11,2022-07-13,Hillsborough County,Florida,5,275000000,Tropical Storm
+2022-08-03,2022-08-05,Franklin County,Ohio,2,140000000,Flash Flood
+2022-09-16,2022-09-18,Salt Lake County,Utah,1,80000000,Mountain Runoff
+2022-10-07,2022-10-09,Hennepin County,Minnesota,3,190000000,River Overflow
+2021-01-20,2021-01-22,Los Angeles County,California,4,220000000,Atmospheric River
+2021-02-12,2021-02-14,Bexar County,Texas,6,310000000,Winter Storm
+2021-03-05,2021-03-07,Fulton County,Georgia,1,95000000,Heavy Rain
+2021-04-28,2021-04-30,Palm Beach County,Florida,3,160000000,Storm Surge
+2021-05-15,2021-05-17,Middlesex County,Massachusetts,0,45000000,Nor'easter
+2021-06-08,2021-06-10,Erie County,New York,2,110000000,Lake Effect
+2021-07-21,2021-07-23,Pima County,Arizona,1,70000000,Flash Flood
+2021-08-14,2021-08-16,Allegheny County,Pennsylvania,4,185000000,River Flooding
+2021-09-02,2021-09-04,Fairfax County,Virginia,2,135000000,Hurricane Remnants
+2021-10-25,2021-10-27,Contra Costa County,California,0,55000000,Atmospheric River 

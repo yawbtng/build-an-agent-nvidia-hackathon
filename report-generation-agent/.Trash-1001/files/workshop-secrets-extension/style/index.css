@@ -1,0 +1,25 @@
+.jp-secrets-widget {
+  background: white;
+  padding: 10px;
+}
+
+.jp-secrets-widget h3 {
+  color: #333;
+  margin-top: 0;
+}
+
+.jp-secrets-widget input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.jp-secrets-widget button {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+}
+
+.jp-secrets-widget button:hover {
+  background: #f0f0f0;
+} 
