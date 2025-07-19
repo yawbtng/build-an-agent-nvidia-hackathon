@@ -1,35 +1,23 @@
-"""
-Helper functions for the report generation agent.
-"""
+"""Tools for the report generation workflow."""
 
+import asyncio
 import logging
-from typing import TYPE_CHECKING, Any
+import os
+from typing import Literal
 
-from langchain_core.messages import BaseMessage
-from langchain_core.runnables import Runnable
-
-if TYPE_CHECKING:
-    from models import Section
+from langchain_core.tools import tool
+from tavily import AsyncTavilyClient
 
 _LOGGER = logging.getLogger(__name__)
 
-
-def invoke_structured_llm_with_retry(
-    structured_llm: Runnable, queries: Any, max_attempts: int = 3
-) -> None | BaseMessage:
-    """
-    Not all LLMs support structured generation.
-    Retry max_attempts to get a result back
-    """
-    for _ in range(max_attempts):
-        results = structured_llm.invoke(queries)
-        if results:
-            return results
-    _LOGGER.warning("No results from LLM after %d retries", max_attempts)
-    return None
+tavily_client = AsyncTavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+INCLUDE_RAW_CONTENT = False
+MAX_TOKENS_PER_SOURCE = 1000
+MAX_RESULTS = 5
+SEARCH_DAYS = 30
 
 
-def deduplicate_and_format_sources(
+def _deduplicate_and_format_sources(
     search_response, max_tokens_per_source, include_raw_content=True
 ):
     """
@@ -89,21 +77,50 @@ def deduplicate_and_format_sources(
     return formatted_text.strip()
 
 
-def format_sections(sections: list["Section"]) -> str:
-    """Format a list of sections into a string"""
-    formatted_str = ""
-    for idx, section in enumerate(sections, 1):
-        formatted_str += f"""
-{'='*60}
-Section {idx}: {section.name}
-{'='*60}
-Description:
-{section.description}
-Requires Research:
-{section.research}
+@tool(parse_docstring=True)
+async def search_tavily(
+    queries: list[str],
+    topic: Literal["general", "news", "finance"] = "news",
+) -> str:
+    """Search the web using the Tavily API.
 
-Content:
-{section.content if section.content else '[Not yet written]'}
+    Args:
+        queries: List of queries to search.
+        topic: The topic of the provided queries.
+          general - General search.
+          news - News search.
+          finance - Finance search.
 
-"""
-    return formatted_str
+    Returns:
+        A string of the search results.
+    """
+    _LOGGER.info("Searching the web using the Tavily API")
+
+    days = None
+    if topic == "news":
+        days = SEARCH_DAYS
+
+    search_jobs = []
+    for query in queries:
+        _LOGGER.info("Searching for query: %s", query)
+        search_jobs.append(
+            asyncio.create_task(
+                tavily_client.search(
+                    query,
+                    max_results=MAX_RESULTS,
+                    include_raw_content=INCLUDE_RAW_CONTENT,
+                    topic=topic,
+                    days=days,  # type: ignore[arg-type]
+                )
+            )
+        )
+
+    search_docs = await asyncio.gather(*search_jobs)
+
+    formatted_search_docs = _deduplicate_and_format_sources(
+        search_docs,
+        max_tokens_per_source=MAX_TOKENS_PER_SOURCE,
+        include_raw_content=INCLUDE_RAW_CONTENT,
+    )
+    _LOGGER.debug("Search results: %s", formatted_search_docs)
+    return formatted_search_docs
