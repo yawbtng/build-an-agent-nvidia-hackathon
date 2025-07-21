@@ -1,6 +1,6 @@
 # ref: https://jupyter-app-launcher.readthedocs.io/en/stable/usage.html
 
-- title: "build-an-agent"
+- title: "Build an Agent"
   description: ""
   source: http://localhost:$PORT/
   cwd: "/project/.devx"
