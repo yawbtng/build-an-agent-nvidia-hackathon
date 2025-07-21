@@ -1,12 +1,6 @@
 # Build An Agent Workshop
 
-<img src="_static/robots/hero.png" alt="Workshop Robot Character" style="float:left; max-width:300px;margin:25px;" />
-
-<h1 style="color:#6cb800; font-size:2.5em; margin-bottom:0.2em;">Comprehensive Agent Development</h1>
-
-<div style="font-size:1.2em; line-height:1.6;">
-
-## Workshop Overview
+<img src="_static/robots/hero.png" alt="Workshop Robot Character" style="float:right;max-width:300px;margin:25px;" />
 
 Welcome to the comprehensive Build An Agent workshop! This workshop will take you through the complete process of building AI agents from scratch.
 
@@ -85,8 +79,5 @@ Choose your entry point:
 
 **💡 Tip:** Each notebook contains detailed instructions, hints, and "NEED SOME HELP?" sections with code examples.
 
-<div style="text-align: center; margin-top: 40px;">
 <img src="_static/robots/party.png" alt="Happy Coding!" style="max-width:200px; border-radius:12px; box-shadow:0 2px 8px #ccc;" />
-</div>
 
-</div> 

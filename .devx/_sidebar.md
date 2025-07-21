@@ -1,6 +1,6 @@
 
-* [🏠 Workshop Overview](workshop_overview.md)
-* [📋 Interactive Workshop Index](report-generation-agent/workshop_index.ipynb)
+* [🏠 Overview](workshop_overview.md)
+* 
 
 **🚀 Getting Started**
 * [🔑 Secrets Management](secrets_management.md)

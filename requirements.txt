@@ -2,7 +2,6 @@ jupyterlab>=4.4.3
 jupyterlab-git>=0.44.0
 jupyter-app-launcher>=0.1.0
 voila~=0.5.8
-cachier~=4.1.0
 OpenAI~=1.97.0
 langgraph~=0.5.3
 langchain-nvidia-ai-endpoints~=0.3.12

@@ -1,0 +1,6 @@
+- [ ] [ryan] Notebook for using the agent
+- [ ] [ryan] remove .git folder
+- [ ] [hannah] secrets dashboard
+- [ ] [ryan] finalize layout for docs
+- [ ] [hannah] agents the hard way notebook - solution and student version
+- [ ] divide and conquer docs
