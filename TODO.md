@@ -1,5 +1,6 @@
 - [ ] [ryan] Notebook for using the agent
 - [ ] [ryan] remove .git folder
+- [ ] [ryan] fix CI pipeline
 - [ ] [hannah] secrets dashboard
 - [ ] [ryan] finalize layout for docs
 - [ ] [hannah] agents the hard way notebook - solution and student version
