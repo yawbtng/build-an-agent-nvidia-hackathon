@@ -2,8 +2,9 @@
 - [ ] [hannah] secrets dashboard
 - [ ] [ryan] finalize layout for docs
 - [ ] [hannah] agents the hard way notebook - solution and student version
-- [ ] divide and conquer docs
 - [ ] [hannah] setting_up_secrets.md
         - make sure to update docs to open settings page.
 - [ ] [ryan] introduction_to_Agents.md
+- [ ] [hannah] research agent
+- [ ] [ryan] learn the code
 - [ ] [ whoever wins ] share_your_agent.md
