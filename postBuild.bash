@@ -19,11 +19,10 @@ ln -s /project/.devx/jp_app_launcher.yaml ~/.local/share/jupyter/jupyter_app_lau
 echo "$(whoami) ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/workbench-persist > /dev/null
 
 # load a secrets file, if one exists
-sudo bash -c 'cat << "EOF" > /etc/profile.d/secrets.sh
-#!/bin/bash
+bash -c 'cat << "EOF" >> ~/.bashrc
+
+# load secrets
 set -a
 source /project/secrets.env
 set +a
 EOF'
-sudo chmod +x /etc/profile.d/secrets.sh
-

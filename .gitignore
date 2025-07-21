@@ -1,4 +1,7 @@
-.project/*,!.project/spec.yaml,!.project/brev.*,!.project/cache
+.project/*
+!.project/spec.yaml
+!.project/brev.*
+!.project/cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

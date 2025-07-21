@@ -18,3 +18,11 @@ ln -s /project/.devx/jp_app_launcher.yaml ~/.local/share/jupyter/jupyter_app_lau
 # allow sudo without password
 echo "$(whoami) ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/workbench-persist > /dev/null
 
+# load a secrets file, if one exists
+bash -c 'cat << "EOF" >> ~/.bashrc
+
+# load secrets
+set -a
+source /project/secrets.env
+set +a
+EOF'
