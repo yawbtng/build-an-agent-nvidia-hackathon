@@ -31,19 +31,14 @@ services:
             - --NotebookApp.base_url=$PROXY_PREFIX
             - --NotebookApp.default_url=/lab
             - --allow-root
-        deploy:
-            resources:
-                reservations:
-                    devices:
-                        - capabilities:
-                            - gpu
-                          count: all
-                          driver: nvidia
         environment:
-            - NGC_API_KEY=${NGC_API_KEY}
             - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-devx}
-            - RUNTIME_VAR=5
+            - THROTTLE_LLM_CALLS=1
             - SHELL=/bin/bash
+            - LANGSMITH_TRACING=true
+            - LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+            - LANGSMITH_PROJECT=sample-searching-agent
+            - NGC_API_KEY=${NGC_API_KEY}
         healthcheck:
             interval: 30s
             retries: 3
@@ -59,7 +54,7 @@ services:
         ports:
             - 8888:8888
         restart: always
-        user: ubuntu
+        user: rapids
         volumes:
             - ..:/project:cached
             - /var/run/docker.sock:/var/run/docker.sock
