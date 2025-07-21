@@ -25,13 +25,13 @@ jobs:
 
     - name: Build and tag the Docker image
       run: |
-        IMAGE=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/devx
+        IMAGE=ghcr.io/${{ github.repository_owner }}/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')/devx
         docker build .project/cache --file .project/brev.Containerfile --tag $IMAGE:${{ steps.vars.outputs.timestamp }}
         docker tag $IMAGE:${{ steps.vars.outputs.timestamp }} $IMAGE:${{ steps.vars.outputs.branch }}
 
     - name: Push both tags to GHCR
       run: |
-        IMAGE=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/devx
+        IMAGE=ghcr.io/${{ github.repository_owner }}/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')/devx
         docker push $IMAGE:${{ steps.vars.outputs.timestamp }}
         docker push $IMAGE:${{ steps.vars.outputs.branch }}
 
