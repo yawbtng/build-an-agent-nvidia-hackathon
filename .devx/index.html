@@ -83,6 +83,14 @@
   <!-- Docsify Mustache -->
   <script src="https://unpkg.com/docsify-mustache"></script>
 
+  <!-- Mermaid Support -->
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true });
+    window.mermaid = mermaid;
+  </script>
+  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
+
   <!-- Custom Dependencies -->
   <script src="_static/js/mustache-config.js"></script>
   <script src="_static/js/jupyter-link.js"></script>

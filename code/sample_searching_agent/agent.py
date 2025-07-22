@@ -37,8 +37,8 @@ class AgentState(BaseModel):
     messages: Annotated[Sequence[Any], add_messages] = []
 
 
-async def topic_discovery(state: AgentState, config: RunnableConfig):
-    """Discover the topic of the document."""
+async def topic_research(state: AgentState, config: RunnableConfig):
+    """Research the topic of the document."""
     _LOGGER.info("Performing initial topic research.")
 
     researcher_state = researcher.ResearcherState(
@@ -76,16 +76,16 @@ async def report_planner(state: AgentState, config: RunnableConfig):
     raise RuntimeError("Failed to call model after %d attempts.", _MAX_LLM_RETRIES)
 
 
-async def section_writer(state: AgentState, config: RunnableConfig):
-    """Write the sections of the report."""
+async def section_author_orchestrator(state: AgentState, config: RunnableConfig):
+    """Orchestrate the section authoring process."""
     if not state.report_plan:
         raise ValueError("Report plan is not set.")
 
-    _LOGGER.info("Writing the sections of the report.")
+    _LOGGER.info("Orchestrating the section authoring process.")
 
     writers = []
     for idx, section in enumerate(state.report_plan.sections):
-        _LOGGER.info("Creating writer agent for section: %s", section.name)
+        _LOGGER.info("Creating author agent for section: %s", section.name)
 
         section_writer_state = author.SectionWriterState(
             index=idx,
@@ -116,12 +116,12 @@ async def section_writer(state: AgentState, config: RunnableConfig):
     return state
 
 
-async def report_writer(state: AgentState, config: RunnableConfig):
+async def report_author(state: AgentState, config: RunnableConfig):
     """Write the report."""
     if not state.report_plan:
         raise ValueError("Report plan is not set.")
 
-    _LOGGER.info("Writing the report.")
+    _LOGGER.info("Authoring the report.")
 
     output = f"# {state.report_plan.title}\n\n"
     for section in state.report_plan.sections:
@@ -134,15 +134,15 @@ async def report_writer(state: AgentState, config: RunnableConfig):
 
 workflow = StateGraph(AgentState)
 
-workflow.add_node("topic_discovery", topic_discovery)
+workflow.add_node("topic_research", topic_research)
 workflow.add_node("report_planner", report_planner)
-workflow.add_node("section_writer", section_writer)
-workflow.add_node("report_writer", report_writer)
+workflow.add_node("section_author_orchestrator", section_author_orchestrator)
+workflow.add_node("report_author", report_author)
 
-workflow.add_edge(START, "topic_discovery")
-workflow.add_edge("topic_discovery", "report_planner")
-workflow.add_edge("report_planner", "section_writer")
-workflow.add_edge("section_writer", "report_writer")
-workflow.add_edge("report_writer", END)
+workflow.add_edge(START, "topic_research")
+workflow.add_edge("topic_research", "report_planner")
+workflow.add_edge("report_planner", "section_author_orchestrator")
+workflow.add_edge("section_author_orchestrator", "report_author")
+workflow.add_edge("report_author", END)
 
 graph = workflow.compile()
