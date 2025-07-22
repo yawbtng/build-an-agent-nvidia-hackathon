@@ -26,3 +26,10 @@ set -a
 source /project/secrets.env
 set +a
 EOF'
+
+# include home dir bin
+bash -c 'cat << EOF > ~/.bashrc
+
+# add bin dirs
+export PATH=\$PATH:~/.local/bin/:~/bin
+EOF'
