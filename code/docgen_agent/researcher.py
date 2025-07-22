@@ -20,8 +20,11 @@ llm_with_tools = llm.bind_tools([tools.search_tavily])
 
 class ResearcherState(BaseModel):
     topic: str
+    # the topic to be researched
     number_of_queries: int = 5
+    # how many searches should be done per topic?
     messages: Annotated[Sequence[Any], add_messages] = []
+    # a chat log of the research results
 
 
 async def tool_node(state: ResearcherState):

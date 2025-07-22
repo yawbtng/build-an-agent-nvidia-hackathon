@@ -60,7 +60,11 @@ flowchart TD
     end
 ```
 
-Each node in the graph is defined by a function in the Python file:
+The agent's state definition is called
+<button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'class ResearcherState');"><i class="fas fa-code"></i> ResearcherState</button>.
+The `state` object is passed to each node in the graph.
+
+Each node in the graph manipulates the state using a function:
 - **agent:** <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'def call_model');"><i class="fas fa-code"></i> call_model</button>
 - **tools:** <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'def tool_node');"><i class="fas fa-code"></i> tool_node</button>
 - **has tool calls?:** <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'def has_tool_calls');"><i class="fas fa-code"></i> has_tool_calls</button>
@@ -68,6 +72,8 @@ Each node in the graph is defined by a function in the Python file:
 The graph is built and saved to
 <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
 
+If you would like to experiment with this agent, a
+<button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa fa-lab"></i> Researcher Client</button> playground is avilable.
 
 <!-- fold:break -->
 
