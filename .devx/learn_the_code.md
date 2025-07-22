@@ -131,17 +131,21 @@ If you would like to experiment with this agent, an
 
 <!-- fold:break -->
 
-## Top Level Architecture
+## Document Generation Agent
 
 <img src="_static/robots/supervisor.png" alt="Research Robot" style="float:right; max-width:300px;margin:25px;" />
 
 Using these two agents, we can now put together our Document Generation Agent's workflow.
 
-The Document Generation agent is actually the simplest yet, is is just a linear workflow! We simply need to research the topic, plan the document outline, write the sections, and compile the whole report. Easy!
+The Document Generation agent is actually the simplest yet, it is just a linear workflow!
+
+We simply need to research the topic, plan the document outline, write the sections, and compile the whole report. Easy!
 
 <!-- fold:break -->
 
- Compare this diagram to the <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'graph =');"><i class="fas fa-code"></i> graph definition</button> code.
+This workflow is defined in
+<button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/agent.py');"><i class="fa-brands fa-python"></i> code/docgen_agent/agent.py</button>.
+Compare to this diagram.
 
 ```mermaid
 flowchart TD
@@ -152,11 +156,37 @@ flowchart TD
     author([author agent])
 ```
 
-Each node in this graph has an associated function, defined in the same file. Two nodes in our graph are sub-agents.
+The agent's state definition is called
+<button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'class AgentState');"><i class="fas fa-code"></i> AgentState</button>.
+The `state` object is passed to each node in the graph.
 
-*researcher agent* is the first node in our graph and is defined in <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'def topic_research');"><i class="fas fa-code"></i> topic_research</button>. This node invokes the researcher subgraph, that adds topic research to the message log.
+Each node in the graph manipulates the state using a function:
+- **researcher agent:** <button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'def topic_research');"><i class="fas fa-code"></i> topic_research</button>
+- **report_planner:** <button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'def report_planner');"><i class="fas fa-code"></i> report_planner</button>
+- **author_agent:** <button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'def section_author_orchestrator');"><i class="fas fa-code"></i> section_author_orchestrator</button>
+- **report_author:** <button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'def report_author');"><i class="fas fa-code"></i> report_author</button>
+
+The graph is built and saved to
+<button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
+
+If you would like to experiment with this agent, a
+<button onclick="openOrCreateFileInJupyterLab('code/agent_client.ipynb');"><i class="fa-solid fa-flask"></i> Agent Client</button> playground is avilable.
 
 <!-- fold:break -->
 
 ## Prompts
 
+One part that has been conveniently set aside is the system prompts.
+
+Everytime an AI model is used, a system prompt is provided to tell the model what to do.
+
+All of these system prompts have been consolidated into
+<button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/prompts.py');"><i class="fa-brands fa-python"></i> code/docgen_agent/prompts.py</button>.
+
+<!-- fold:break -->
+
+## Success!
+
+That is the entire code base for the document generation agent.
+
+<img src="_static/robots/party.png" alt="Research Robot" style="max-width:500px;margin:25px;" />
