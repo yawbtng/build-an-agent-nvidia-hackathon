@@ -145,7 +145,7 @@ async function goToLine(filename, lineno) {
 }
 
 
-async function goToLineAndSelect(filename, searchString) {
+async function goToLineAndSelect(filename, searchString, retry=true) {
     const app = window.parent.jupyterapp;
     if (!app) {
         console.error('JupyterLab app is not available on window.jupyterapp');
@@ -158,6 +158,11 @@ async function goToLineAndSelect(filename, searchString) {
     const blocks = editor?.doc?.children;
 
     if (!editor || !blocks || !Array.isArray(blocks)) {
+        if (retry) {
+            // retry with a delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return await goToLineAndSelect(filename, searchString, retry=false);
+        }
         console.error("No suitable editor or document found.");
         return;
     }
@@ -169,14 +174,19 @@ async function goToLineAndSelect(filename, searchString) {
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes(searchString)) {
                 const matchLine = totalLine;
+                
+                // Go to matchLine
+                const linePadding = Math.min(lines.length - i, 5);
+                const targetLine = matchLine + linePadding;
+                await app.commands.execute('fileeditor:go-to-line', { line: targetLine });
 
                 // Select and scroll to the matched line
-                selection = {
+                const selection = {
                     start: { line: matchLine, column: 0 },
                     end: { line: matchLine, column: lines[i].length }
                 }
-                await app.commands.execute('fileeditor:go-to-line', { line: matchLine });
                 editor.setSelection(selection);
+                
                 return;
             }
             totalLine++;
