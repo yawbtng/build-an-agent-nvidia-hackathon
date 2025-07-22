@@ -4,18 +4,9 @@ networks:
 services:
     devx:
         command:
-            - jupyter
-            - lab
-            - --ip=0.0.0.0
-            - --port=8888
-            - --no-browser
-            - --ServerApp.token=''
-            - --ServerApp.password_required=False
-            - --expose-app-in-browser
-            - --NotebookApp.allow_origin='*'
-            - --NotebookApp.base_url=$PROXY_PREFIX
-            - --NotebookApp.default_url=/lab
-            - --allow-root
+            - /bin/bash
+            - -ic
+            - env; jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --ServerApp.token='' --ServerApp.password_required=False --expose-app-in-browser --NotebookApp.allow_origin='*' --NotebookApp.base_url=$PROXY_PREFIX --NotebookApp.default_url=/lab --allow-root
         deploy:
             resources:
                 reservations:
@@ -25,13 +16,13 @@ services:
                           count: all
                           driver: nvidia
         environment:
+            - THROTTLE_LLM_CALLS=1
+            - SHELL=/bin/bash
+            - LANGSMITH_TRACING=true
             - LANGSMITH_ENDPOINT=https://api.smith.langchain.com
             - LANGSMITH_PROJECT=sample-searching-agent
             - NGC_API_KEY=${NGC_API_KEY}
             - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-devx}
-            - THROTTLE_LLM_CALLS=1
-            - SHELL=/bin/bash
-            - LANGSMITH_TRACING=true
         healthcheck:
             interval: 30s
             retries: 3

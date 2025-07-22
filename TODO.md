@@ -1,7 +1,7 @@
-- [ ] [hannah] secrets dashboard
+- [ ] [hannah] secrets dashboard ✅
 - [ ] [hannah] agents the hard way notebook - solution and student version
-- [ ] [hannah] setting_up_secrets.md
-        - make sure to update docs to open settings page.
+- [ ] [hannah] setting_up_secrets.md  ✅
+        - make sure to update docs to open settings page.  ✅
 - [ ] [ryan] introduction_to_Agents.md
 - [ ] [hannah] research agent
 - [ ] [ryan] learn the code
