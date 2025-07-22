@@ -13,11 +13,3 @@
   icon: /project/.devx/_static/img/nvidia-icon.svg
   catalog: NVIDIA DevX Workshops
 
-- title: Voila example
-  description: Example of opening a notebook in dashboard mode with Voila
-  source: /project/Untitled.ipynb
-  cwd: /project
-  type: notebook-voila
-  args:
-      theme: dark
-  catalog: Another catalog
