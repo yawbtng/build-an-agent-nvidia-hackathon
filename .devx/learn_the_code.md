@@ -12,12 +12,15 @@ Ready to get started? Let's start off by building the smallest components until 
 
 ## Tavily Tool
 
-The first part of any agent is the set of tools. 
+The first part of any agent is the set of tools.
 Tools are functions that define the actions an agent can take.
 These functions allow agents to interact with external systems.
 
+We will define our tools in
+<button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/tools.py');"><i class="fa-brands fa-python"></i> code/docgen_agent/tools.py</button>.
 For our use case, we want to allow our agents to search Tavily.
-This tool is defined in `tools.py` and is called 
+
+This tool is defined in `tools.py` and is called
 <button onclick="goToLineAndSelect('code/sample_searching_agent/tools.py', 'async def search_tavily');"><i class="fas fa-code"></i> search_tavily</button>.
 
 <!-- fold:break -->
@@ -71,15 +74,15 @@ At a the highest level, the research agent graph is a reasonably linear process.
 ```mermaid
 flowchart TD
     START --> researcher
-    researcher --> report_planner --> 
+    researcher --> report_planner -->
     author --> report_author --> END
     researcher([researcher agent])
     author([author agent])
 ```
 
-Each node in this graph has an associated function, defined in the same file. Two nodes in our graph are sub-agents. 
+Each node in this graph has an associated function, defined in the same file. Two nodes in our graph are sub-agents.
 
-*researcher agent* is the first node in our graph and is defined in <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'def topic_research');"><i class="fas fa-code"></i> topic_research</button>. This node invokes the researcher subgraph, that adds topic research to the message log. 
+*researcher agent* is the first node in our graph and is defined in <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'def topic_research');"><i class="fas fa-code"></i> topic_research</button>. This node invokes the researcher subgraph, that adds topic research to the message log.
 
 <!-- fold:break -->
 

@@ -1,6 +1,7 @@
 jupyterlab>=4.4.3
 jupyterlab-git>=0.44.0
 jupyter-app-launcher>=0.1.0
+dotenv~=0.9.9
 voila~=0.5.8
 OpenAI~=1.97.0
 langgraph~=0.5.3
