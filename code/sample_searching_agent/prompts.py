@@ -76,7 +76,9 @@ Overall report topic: {overall_topic}
 Section name: {section_name}
 Section description: {section_description}
 
-Based on the research information provided in the conversation history, write a detailed, well-structured section that:
+If this section is an introduction or conclusion, keep the section brief. Only one or two paragraphs.
+
+If this is a body section, Based on the research information provided in the conversation history, write a detailed, well-structured section that:
 
 1. Covers all the key points outlined in the section description
 2. Uses the research information to provide accurate, up-to-date technical details

@@ -1,6 +1,4 @@
-- [ ] [ryan] Notebook for using the agent
 - [ ] [hannah] secrets dashboard
-- [ ] [ryan] finalize layout for docs
 - [ ] [hannah] agents the hard way notebook - solution and student version
 - [ ] [hannah] setting_up_secrets.md
         - make sure to update docs to open settings page.
