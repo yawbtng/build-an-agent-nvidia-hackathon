@@ -14,8 +14,9 @@
   catalog: NVIDIA DevX Workshops
 
 - title: "Secrets Manager"
-  source: /project/secrets_management.ipynb
+  source: /project/code/secrets_management.ipynb
   cwd: /projects
   args: {}
   type: notebook-voila
+  icon: /project/.devx/_static/img/key.svg
   catalog: NVIDIA DevX Workshops

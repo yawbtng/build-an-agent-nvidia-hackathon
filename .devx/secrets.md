@@ -3,12 +3,9 @@
 <img src="_static/robots/spyglass.png" alt="Secrets Management Robot" style="float:right; max-width:300px;margin:25px;" />
 
 
-For this agent to work, we will need to configure a few secrets.
+For this agent to work, we will need to configure a few secrets. Use the <button onclick="openVoila('code/secrets_management.ipynb');"><i class="fas fa-key"></i> Secrets Manager</button> to set these up.
 
-**In order to set up your API keys:**
-1. Go back to the Launcher tab
-2. Click on the "Secrets Manager" icon
-3. Enter your API keys in the form provided
+You can also launch the Secrets Manger from the launcher.
 
 ## NGC API Key
 
@@ -29,7 +26,7 @@ Manage your API Keys from the [NGC console](https://org.ngc.nvidia.com/setup/api
 
 ## Tavily API Key
 
-Tavily is a search API designed for AI agents. It provides real-time web search capabilities that help agents gather up-to-date information from the internet. We will also need a Tavily API key for this workshop. 
+Tavily is a search API designed for AI agents. It provides real-time web search capabilities that help agents gather up-to-date information from the internet. We will also need a Tavily API key for this workshop.
 
 <details>
 <summary>⚠️ Don't have an account?</summary>

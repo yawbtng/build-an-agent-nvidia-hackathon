@@ -127,6 +127,21 @@ async function openFile(app, path, factory = null) {
     }
 }
 
+async function openVoila(path) {
+    const app = window.parent.jupyterapp;
+    if (!app) {
+        console.error('JupyterLab app is not available on window.jupyterapp');
+        return;
+    }
+
+    try {
+        await openFile(app, path, "Voila Preview");
+        console.log(`Opened ${path} with Voila Preview successfully`);
+    } catch (error) {
+        console.error(`Failed to open ${path} with Voila Preview:`, error);
+    }
+}
+
 function getParentDirectory(path) {
     const parts = path.split('/');
     parts.pop(); // remove the file name
@@ -174,7 +189,7 @@ async function goToLineAndSelect(filename, searchString, retry=true) {
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes(searchString)) {
                 const matchLine = totalLine;
-                
+
                 // Go to matchLine
                 const linePadding = Math.min(lines.length - i, 5);
                 const targetLine = matchLine + linePadding;
@@ -186,7 +201,7 @@ async function goToLineAndSelect(filename, searchString, retry=true) {
                     end: { line: matchLine, column: lines[i].length }
                 }
                 editor.setSelection(selection);
-                
+
                 return;
             }
             totalLine++;
