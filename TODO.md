@@ -3,4 +3,3 @@
 - [ ] [hannah] research agent
 - [ ] [ryan] learn the code
 - [ ] [ whoever wins ] share_your_agent.md
-- [ ] secrets amanger not loading initial values from env
