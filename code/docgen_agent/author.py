@@ -124,7 +124,7 @@ def has_tool_calls(state: SectionWriterState) -> bool:
 
 workflow = StateGraph(SectionWriterState)
 
-workflow.add_node("research_agent", research_model)
+workflow.add_node("agent", research_model)
 workflow.add_node("tools", tool_node)
 workflow.add_node("writer", writing_model)
 
@@ -132,19 +132,19 @@ workflow.add_conditional_edges(
     START,
     needs_research,
     {
-        "research": "research_agent",
+        "research": "agent",
         "write": "writer",
     },
 )
 workflow.add_conditional_edges(
-    "research_agent",
+    "agent",
     has_tool_calls,
     {
         True: "tools",
         False: "writer",
     },
 )
-workflow.add_edge("tools", "research_agent")
+workflow.add_edge("tools", "agent")
 workflow.add_edge("writer", END)
 
 graph = workflow.compile()

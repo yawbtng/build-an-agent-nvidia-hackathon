@@ -59,6 +59,7 @@ flowchart TD
         tools
     end
 ```
+<!-- fold:break -->
 
 The agent's state definition is called
 <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'class ResearcherState');"><i class="fas fa-code"></i> ResearcherState</button>.
@@ -73,11 +74,22 @@ The graph is built and saved to
 <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
 
 If you would like to experiment with this agent, a
-<button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa fa-lab"></i> Researcher Client</button> playground is avilable.
+<button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa-solid fa-flask"></i> Researcher Agent Client</button> playground is avilable.
 
 <!-- fold:break -->
 
 ## Section Author Agent
+
+<img src="_static/robots/typewriter.png" alt="Research Robot" style="float:right; max-width:300px;margin:25px;" />
+
+Simple ReAct agents are very powerful, but are often times combined with additional steps to do more complicated workflows.
+
+The Section Author agent will need to perform additional research, but only when requested. Once the necessary research is available, it must use that research to write the section.
+
+<!-- fold:break -->
+
+Notice the architecture below. A gating function has been added before the ReAct style agent. An additional step has also been added after the ReAct agent to do the writing. This has been created in
+<button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/author.py');"><i class="fa-brands fa-python"></i> code/docgen_agent/author.py</button>.
 
 ```mermaid
 flowchart TD
@@ -100,9 +112,36 @@ flowchart TD
 
 <!-- fold:break -->
 
+The agent's state definition is called
+<button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'class SectionWriterState');"><i class="fas fa-code"></i> SectionWriterState</button>.
+The `state` object is passed to each node in the graph.
+
+Each node in the graph manipulates the state using a function:
+- **needs research?:** <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'def needs_research');"><i class="fas fa-code"></i> needs_research</button>
+- **agent:** <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'def research_model');"><i class="fas fa-code"></i> research_model</button>
+- **tools:** <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'def tool_node');"><i class="fas fa-code"></i> tool_node</button>
+- **has tool calls?:** <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'def has_tool_calls');"><i class="fas fa-code"></i> has_tool_calls</button>
+- **writer:** <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'def writing_model');"><i class="fas fa-code"></i> writing_model</button>
+
+The graph is built and saved to
+<button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
+
+If you would like to experiment with this agent, an
+<button onclick="openOrCreateFileInJupyterLab('code/author_client.ipynb');"><i class="fa-solid fa-flask"></i> Author Agent Client</button> playground is avilable.
+
+<!-- fold:break -->
+
 ## Top Level Architecture
 
-At a the highest level, the research agent graph is a reasonably linear process. Compare this diagram to the <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'graph =');"><i class="fas fa-code"></i> graph definition</button> code.
+<img src="_static/robots/supervisor.png" alt="Research Robot" style="float:right; max-width:300px;margin:25px;" />
+
+Using these two agents, we can now put together our Document Generation Agent's workflow.
+
+The Document Generation agent is actually the simplest yet, is is just a linear workflow! We simply need to research the topic, plan the document outline, write the sections, and compile the whole report. Easy!
+
+<!-- fold:break -->
+
+ Compare this diagram to the <button onclick="goToLineAndSelect('code/sample_searching_agent/agent.py', 'graph =');"><i class="fas fa-code"></i> graph definition</button> code.
 
 ```mermaid
 flowchart TD

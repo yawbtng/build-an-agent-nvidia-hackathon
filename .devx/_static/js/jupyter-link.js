@@ -184,14 +184,19 @@ async function goToLineAndSelect(filename, searchString, retry=true) {
 
     // Flatten all lines across all blocks, tracking line numbers
     let totalLine = 0;
+
+    // Get current cursor position
+    const currentCursorPosition = editor.getCursorPosition();
+    const currentLine = currentCursorPosition ? currentCursorPosition.line : 0;
+
     for (const block of blocks) {
         const lines = block.text;
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes(searchString)) {
                 const matchLine = totalLine;
 
-                // Go to matchLine
-                const linePadding = Math.min(lines.length - i, 5);
+                // Only add padding if matchLine > currentLine
+                const linePadding = matchLine > currentLine ? Math.min(lines.length - i, 5) : 0;
                 const targetLine = matchLine + linePadding;
                 await app.commands.execute('fileeditor:go-to-line', { line: targetLine });
 
