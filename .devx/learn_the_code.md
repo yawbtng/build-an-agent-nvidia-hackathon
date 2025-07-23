@@ -33,11 +33,11 @@ Additional tools could be added to this file for use later use by our agent.
 
 <img src="_static/robots/study.png" alt="Research Robot" style="float:right; max-width:300px;margin:25px;" />
 
-Now that our tools are defined, we can create a simple agent to reserach a topic.
+Now that our tools are defined, we can create a simple agent to research a topic.
 
 One of the simplest architectures for tool calling is called ReAct, short for Reasoning + Action.
 
-In this architecture, the agent will reason what actions to take, preform those actions, and then reason on the next steps.
+In this architecture, the agent will reason what actions to take, perform those actions, and then reason on the next steps.
 This is repeated until the agent decides there is no further action to take.
 
 <!-- fold:break -->
@@ -74,7 +74,7 @@ The graph is built and saved to
 <button onclick="goToLineAndSelect('code/docgen_agent/researcher.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
 
 If you would like to experiment with this agent, a
-<button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa-solid fa-flask"></i> Researcher Agent Client</button> playground is avilable.
+<button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa-solid fa-flask"></i> Researcher Agent Client</button> playground is available.
 
 <!-- fold:break -->
 
@@ -127,7 +127,7 @@ The graph is built and saved to
 <button onclick="goToLineAndSelect('code/docgen_agent/author.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
 
 If you would like to experiment with this agent, an
-<button onclick="openOrCreateFileInJupyterLab('code/author_client.ipynb');"><i class="fa-solid fa-flask"></i> Author Agent Client</button> playground is avilable.
+<button onclick="openOrCreateFileInJupyterLab('code/author_client.ipynb');"><i class="fa-solid fa-flask"></i> Author Agent Client</button> playground is available.
 
 <!-- fold:break -->
 
@@ -170,7 +170,7 @@ The graph is built and saved to
 <button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'graph =');"><i class="fas fa-code"></i> graph</button>.
 
 If you would like to experiment with this agent, a
-<button onclick="openOrCreateFileInJupyterLab('code/agent_client.ipynb');"><i class="fa-solid fa-flask"></i> Agent Client</button> playground is avilable.
+<button onclick="openOrCreateFileInJupyterLab('code/agent_client.ipynb');"><i class="fa-solid fa-flask"></i> Agent Client</button> playground is available.
 
 <!-- fold:break -->
 
@@ -178,7 +178,7 @@ If you would like to experiment with this agent, a
 
 One part that has been conveniently set aside is the system prompts.
 
-Everytime an AI model is used, a system prompt is provided to tell the model what to do.
+Every time an AI model is used, a system prompt is provided to tell the model what to do.
 
 All of these system prompts have been consolidated into
 <button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/prompts.py');"><i class="fa-brands fa-python"></i> code/docgen_agent/prompts.py</button>.

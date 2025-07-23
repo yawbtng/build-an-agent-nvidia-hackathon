@@ -2,7 +2,7 @@
 
 <img src="_static/robots/blueprint.png" alt="VSS Robot Character" style="float:left; max-width:300px;margin:25px;" />
 
-Welcome to the world of AI agents! In this excercise, we'll explore how agents apply Large Language Models to solve complex tasks.
+Welcome to the world of AI agents! In this exercise, we'll explore how agents apply Large Language Models to solve complex tasks.
 
 <!-- fold:break -->
 

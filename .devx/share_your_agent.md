@@ -85,7 +85,7 @@ To get started making your own launchable, open the [Brev Launchable Creator](ht
 
 <!-- fold:break -->
 
-- Select: `I have my files in a git repsitory` 
+- Select: `I have my files in a git repository` 
 - Enter the URL to your forked repository: `https://github.com/YOUR_USERNAME/build-an-agent.git`
 - Select `With container(s)` for the runtime environment
 
