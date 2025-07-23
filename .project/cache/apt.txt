@@ -1,3 +1,4 @@
 curl
+gh
 jq
 vim
