@@ -1,5 +1,3 @@
-- [ ] [hannah] agents the hard way notebook - solution and student version
-- [ ] [ryan] introduction_to_Agents.md
 - [ ] [hannah] research agent
 - [ ] [hannah] share_your_agent.md
 - [ ] [ryan] create launchable
