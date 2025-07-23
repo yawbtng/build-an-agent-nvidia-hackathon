@@ -1,53 +1,22 @@
 # Report Generation Agent
 
-<img src="_static/robots/spyglass.png" alt="Research Agent Robot" style="float:right; max-width:300px;margin:25px;" />
+<img src="_static/robots/surf.png" alt="Research Agent Robot" style="float:right; max-width:300px;margin:25px;" />
 
-Meet your AI report writing assistant! The report generation agent automatically researches any topic, creates an outline, writes comprehensive sections, and delivers a complete professional report—all from a single prompt.
+Now that you have a grip on the basics of agents, let's check out a more true-to-life agent architecture with your own report generation agent!
+The report generation agent automatically researches any topic, creates an outline, writes comprehensive sections, and delivers a complete professional report.
 
-## What It Does
+## Under the Hood
 
-Give it any topic and watch the magic happen:
-1. **Researches** your topic using web searches
-2. **Plans** a logical report structure  
-3. **Writes** comprehensive sections
-4. **Delivers** a polished final report
+The report generation agent works in three simple steps:
 
-No manual research, no writer's block, no formatting headaches!
+1. **Research** - Uses a research agent to search the web using Tavily
+2. **Plan** - A single LLM call creates an outline based on the research findings
+3. **Write** - Use an agent to write each section and do more research as needed
 
-<!-- fold:break -->
-
-## The Complete Workflow
-
-<img src="_static/robots/assembly.png" alt="Report Assembly Robot" style="float:right; max-width:250px;margin:25px;" />
-
-The report generation agent orchestrates an entire document creation pipeline. See the implementation in 
-<button onclick="openOrCreateFileInJupyterLab('code/docgen_agent/agent.py');"><i class="fa-brands fa-python"></i> agent.py</button>:
-
-```mermaid
-flowchart TD
-    START --> research[Topic Research]
-    research --> plan[Report Planning]
-    research --> write[Section Writing]
-    plan --> compile[Final Report]
-    write --> compile
-    compile --> END
-    
-    subgraph "Research Agent"
-        research
-        plan
-        write
-    end
-```
-
-From **topic** → **research** → **outline** → **writing** → **complete report**
-
-The 
-<button onclick="goToLineAndSelect('code/docgen_agent/agent.py', 'async def topic_research');"><i class="fas fa-code"></i> topic_research</button> function kicks off the entire process.
-
-<!-- fold:break -->
+That's it! The agent handles all the complexity behind the scenes, delivering a professional report from just a topic prompt.
 
 ## Experience It in Action
 
 <button onclick="openOrCreateFileInJupyterLab('code/researcher_client.ipynb');"><i class="fa-solid fa-flask"></i> Report Agent</button>
 
-See the report generation in action! Prompt the agent to search for information, gather relevant sources, and synthesize its findings. This is your introduction to AI agents that can handle complex, multi-step workflows.
+See the report generation in action! Prompt the agent to search for information, gather relevant sources, and synthesize its findings. 
