@@ -8,7 +8,249 @@ import asyncio
 import re
 import os
 import random
+import requests
+import json
 from playwright.async_api import async_playwright
+
+# Load environment variables from secrets.env
+def load_env_vars():
+    """Load environment variables from secrets.env file."""
+    try:
+        with open('../secrets.env', 'r') as f:
+            for line in f:
+                if '=' in line and not line.startswith('#'):
+                    key, value = line.strip().split('=', 1)
+                    os.environ[key] = value
+        print("✅ Loaded environment variables from secrets.env")
+    except Exception as e:
+        print(f"⚠️  Could not load secrets.env: {e}")
+
+# Load environment variables at startup
+load_env_vars()
+
+def process_text_with_nvidia(original_text, user_request):
+    """Process text using NVIDIA's API for advanced text improvements."""
+    try:
+        # Check if NVIDIA API key is available
+        api_key = os.getenv('NVIDIA_API_KEY')
+        if not api_key:
+            print("⚠️  No NVIDIA API key found.")
+            return original_text
+        
+        # NVIDIA API endpoint for the specific model
+        url = "https://api.nvcf.nvidia.com/v2/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Create a prompt for the AI
+        prompt = f"""
+        Please modify the following text according to this request: "{user_request}"
+        
+        Original text:
+        {original_text}
+        
+        Please provide the modified text that follows the user's request. 
+        Keep the same general structure and meaning, but apply the requested changes.
+        Only return the modified text without explanations.
+        """
+        
+        data = {
+            "messages": [
+                {"role": "system", "content": "You are a helpful text editor that modifies text according to user requests. Provide only the modified text without explanations."},
+                {"role": "user", "content": prompt}
+            ],
+            "model": "nvidia/llama-3_3-nemotron-super-49b-v1",  # Using the specific NVIDIA model
+            "max_tokens": 1000,
+            "temperature": 0.7
+        }
+        
+        print(f"🤖 Calling NVIDIA API with model: {data['model']}")
+        response = requests.post(url, headers=headers, json=data, timeout=60)
+        
+        print(f"🤖 Response status: {response.status_code}")
+        if response.status_code == 200:
+            result = response.json()
+            modified_text = result['choices'][0]['message']['content'].strip()
+            print("🤖 NVIDIA AI successfully processed the text!")
+            return modified_text
+        else:
+            print(f"⚠️  NVIDIA API error: {response.status_code}")
+            print(f"⚠️  Response: {response.text}")
+            return original_text
+        
+    except Exception as e:
+        print(f"⚠️  NVIDIA AI processing failed: {e}")
+        return original_text
+
+def process_text_with_advanced_rules(original_text, user_request):
+    """Process text using advanced rule-based patterns for complex requests."""
+    print("🤖 Using advanced rule-based processing...")
+    
+    request_lower = user_request.lower()
+    modified_text = original_text
+    
+    # 1. Translation patterns
+    if any(word in request_lower for word in ["translate", "spanish", "french", "german", "italian", "portuguese"]):
+        if "spanish" in request_lower:
+            # Simple Spanish translation patterns
+            spanish_translations = {
+                'the': 'el/la',
+                'and': 'y',
+                'of': 'de',
+                'in': 'en',
+                'to': 'a',
+                'for': 'para',
+                'with': 'con',
+                'that': 'que',
+                'this': 'este/esta',
+                'is': 'es',
+                'are': 'son',
+                'was': 'era',
+                'were': 'eran',
+                'will': 'será',
+                'can': 'puede',
+                'have': 'tener',
+                'has': 'tiene',
+                'had': 'tenía',
+                'good': 'bueno',
+                'great': 'excelente',
+                'beautiful': 'hermoso',
+                'wonderful': 'maravilloso',
+                'amazing': 'increíble',
+                'fantastic': 'fantástico'
+            }
+            
+            for english, spanish in spanish_translations.items():
+                pattern = re.compile(r'\b' + re.escape(english) + r'\b', re.IGNORECASE)
+                modified_text = pattern.sub(spanish, modified_text)
+            
+            print("🔄 Applied Spanish translation patterns")
+    
+    # 2. Style transformation patterns
+    if "shakespeare" in request_lower or "elizabethan" in request_lower:
+        shakespeare_replacements = {
+            'you': 'thou',
+            'your': 'thy',
+            'are': 'art',
+            'is': 'be',
+            'am': 'be',
+            'have': 'hast',
+            'has': 'hath',
+            'will': 'shall',
+            'can': 'may',
+            'good': 'fair',
+            'great': 'noble',
+            'beautiful': 'fair',
+            'wonderful': 'marvelous',
+            'amazing': 'wondrous',
+            'fantastic': 'magnificent'
+        }
+        
+        for modern, shakespeare in shakespeare_replacements.items():
+            pattern = re.compile(r'\b' + re.escape(modern) + r'\b', re.IGNORECASE)
+            modified_text = pattern.sub(shakespeare, modified_text)
+        
+        # Add some Shakespearean phrases
+        modified_text = "Verily, " + modified_text
+        modified_text = modified_text.replace(".", ", methinks.")
+        
+        print("🔄 Applied Shakespearean style")
+    
+    # 3. Pirate speak patterns
+    if "pirate" in request_lower:
+        pirate_replacements = {
+            'hello': 'ahoy',
+            'hi': 'ahoy',
+            'yes': 'aye',
+            'no': 'nay',
+            'friend': 'matey',
+            'friends': 'mateys',
+            'you': 'ye',
+            'your': 'yer',
+            'are': 'be',
+            'is': 'be',
+            'am': 'be',
+            'good': 'fine',
+            'great': 'mighty',
+            'beautiful': 'comely',
+            'wonderful': 'splendid',
+            'amazing': 'astonishing'
+        }
+        
+        for normal, pirate in pirate_replacements.items():
+            pattern = re.compile(r'\b' + re.escape(normal) + r'\b', re.IGNORECASE)
+            modified_text = pattern.sub(pirate, modified_text)
+        
+        # Add pirate phrases
+        modified_text = "Arr, " + modified_text
+        modified_text = modified_text.replace(".", ", me hearties!")
+        
+        print("🔄 Applied pirate speak")
+    
+    # 4. Technical manual style
+    if "technical" in request_lower or "manual" in request_lower:
+        technical_replacements = {
+            'good': 'adequate',
+            'great': 'optimal',
+            'wonderful': 'satisfactory',
+            'amazing': 'notable',
+            'fantastic': 'exceptional',
+            'beautiful': 'well-designed',
+            'nice': 'suitable',
+            'cool': 'efficient',
+            'awesome': 'impressive'
+        }
+        
+        for casual, technical in technical_replacements.items():
+            pattern = re.compile(r'\b' + re.escape(casual) + r'\b', re.IGNORECASE)
+            modified_text = pattern.sub(technical, modified_text)
+        
+        # Add technical phrases
+        modified_text = "This document provides the following information: " + modified_text
+        modified_text = modified_text.replace(".", ". Please refer to the documentation for additional details.")
+        
+        print("🔄 Applied technical manual style")
+    
+    # 5. Paragraph splitting
+    if "paragraph" in request_lower and any(word in request_lower for word in ["3", "three", "split", "divide"]):
+        sentences = modified_text.split('. ')
+        if len(sentences) > 1:
+            # Split into roughly equal paragraphs
+            total_sentences = len(sentences)
+            sentences_per_paragraph = max(1, total_sentences // 3)
+            
+            paragraphs = []
+            for i in range(0, total_sentences, sentences_per_paragraph):
+                paragraph = '. '.join(sentences[i:i + sentences_per_paragraph])
+                if paragraph:
+                    paragraphs.append(paragraph)
+            
+            modified_text = '\n\n'.join(paragraphs)
+            print("🔄 Split text into paragraphs")
+    
+    # 6. Formal tone
+    if "formal" in request_lower or "professional" in request_lower:
+        formal_replacements = {
+            'good': 'excellent',
+            'great': 'outstanding',
+            'wonderful': 'exceptional',
+            'amazing': 'remarkable',
+            'fantastic': 'superior',
+            'nice': 'satisfactory',
+            'cool': 'impressive',
+            'awesome': 'notable'
+        }
+        
+        for casual, formal in formal_replacements.items():
+            pattern = re.compile(r'\b' + re.escape(casual) + r'\b', re.IGNORECASE)
+            modified_text = pattern.sub(formal, modified_text)
+        
+        print("🔄 Applied formal tone")
+    
+    return modified_text
 
 def process_text_hybrid(original_text, user_request):
     """Process text using hybrid approach - simple replacement + AI fallback."""
@@ -168,13 +410,17 @@ def process_text_hybrid(original_text, user_request):
     
     # If no changes were made, try AI processing
     if modified_text == original_text:
-        print("🤖 No simple patterns matched, trying AI processing...")
-        # Here you could add AI processing if API key is available
-        api_key = os.getenv('OPENAI_API_KEY')
-        if api_key:
-            print("🤖 AI processing available but not implemented in this demo")
+        print("🤖 No simple patterns matched, trying advanced processing...")
+        
+        # First try NVIDIA AI
+        nvidia_result = process_text_with_nvidia(original_text, user_request)
+        
+        # If NVIDIA failed, try advanced rule-based processing
+        if nvidia_result == original_text:
+            print("🤖 NVIDIA AI failed, trying advanced rule-based processing...")
+            modified_text = process_text_with_advanced_rules(original_text, user_request)
         else:
-            print("🤖 No AI processing available")
+            modified_text = nvidia_result
     
     return modified_text
 
@@ -240,11 +486,13 @@ async def hybrid_document_editor():
         print("- 'Make the text uppercase'")
         print("- 'Add a title at the top'")
         print("- 'Change all text to bold'")
-        print("- 'Replace the word dick with cock'")
-        print("- 'Replace many words with skibidi and rizz'")
         print("- 'Make the text sound more modern and use better vocabulary'")
         print("- 'Rewrite this in a casual, friendly tone'")
         print("- 'Add more descriptive language and vivid imagery'")
+        print("- 'Translate the second paragraph to Spanish'")
+        print("- 'Rewrite this in Shakespearean style'")
+        print("- 'Convert this to pirate speak'")
+        print("- 'Make this sound like a technical manual'")
         
         user_request = input("\nEnter your editing request: ").strip()
         
