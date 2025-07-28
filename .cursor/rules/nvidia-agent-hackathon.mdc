@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+HANDSFREE COMPUTER-USE AGENT — PROJECT BRIEF (TXT)
+
+1) PROBLEM STATEMENT
+Millions of people with motor impairments face disproportionate friction when using computers. Small click targets, complex multi-step flows, and interfaces that assume precise mouse control or multi-key “chords” make everyday tasks slow or impossible. Existing OS-level voice control helps with dictation and simple clicks, but it does not reliably plan multi-step tasks or adapt to different websites’ structures. We aim to reduce motor effort by converting a short, plain-language request into a sequence of robust, keyboard-like browser actions that execute the task end-to-end.
+
+2) PRIMARY USE CASE (MVP SCOPE)
+“Form Autofill & Submit” on a simple public contact/support form.
+- Input modality (MVP): typed natural-language command (voice can be added later).
+- Typical request: “Fill the contact form with name ‘Joshua Boateng’, email ‘joshua@example.com’, message ‘Requesting accommodation info.’ Then submit.”
+- What success looks like: The agent identifies the relevant form fields by label/accessible name/placeholder, focuses each field, enters the values, confirms the intended action, and submits. If a validation error appears (e.g., invalid email), the agent detects it and performs one corrective round before re-submitting.
+- What is out of scope today: Logins/2FA, CAPTCHAs, drag-and-drop widgets, rich editors, or sites requiring complex authentication.
+
+(If time permits later, a secondary use case is “Inbox triage” on a pre-opened webmail tab: list top unread items this week, open Nth, compose a short template reply—still keyboard-like actions and no account setup during the demo.)
+
+3) THE AGENT (WHAT IT IS AND HOW IT BEHAVES)
+Goal: A planning-and-acting browser agent that turns a single typed intent into reliable steps on the current web page, prioritizing accessibility-friendly selectors and keyboard-equivalent actions.
+
+3.1 Core Agent Loop (Plan → Act → Observe → Finish)
+- Parse the user’s typed request.
+- Build a short plan (e.g., locate form, for each required field: focus → type, then submit).
+- Execute steps using computer-use tools; after each action, observe the page state and adjust if needed.
+- Confirm before irreversible steps (final “Submit”). If the page returns validation errors, correct once and re-submit; otherwise report the barrier clearly (e.g., CAPTCHA detected).
+
+3.2 Implementation Approach (High-Level, Technology-Agnostic But Concrete)
+- Orchestration & Agent Graph: Use the LangGraph Computer Use Agent template (langchain-ai/langgraph-cua-py) to stand up an agent that can plan and call browser tools deterministically.
+- Browser/Environment Control: Use Scrapybara as the browser control layer to read the page, evaluate element structures, and perform actions like click/type/submit with semantic, accessibility-aware selectors.
+- Reasoning Model: Plug any high-quality tool-calling reasoning model that’s easy to access in the hackathon environment (e.g., an NVIDIA NIM-hosted LLM). The agent relies on the model for step planning and decision-making between tool calls.
+- Tool Surface (keep it tiny and predictable):
+  • read_page(): return a compact map of visible fields and buttons (labels, aria-labels, placeholders).
+  • type(target, text): type into an input matched by label/aria/placeholder.
+  • click(query): click a button or link by visible text or aria-label.
+  • submit(): submit the active form (or the nearest form element); require a confirmation step.
+- Selector Strategy: Prefer accessible names (label/aria-label/aria-labelledby) and visible text; avoid brittle CSS/XPath when possible. Use keyboard-equivalent operations to minimize reliance on precise pointer movements.
+- Input/Output (MVP): typed commands via a minimal web or CLI interface; short, plain-language status messages returned to the user. Speech-to-text and text-to-speech can be layered on after the browser agent is stable.
+
+3.3 Constraints & Guardrails
+- Do not attempt to bypass CAPTCHAs or automate drag-and-drop. If encountered, clearly report the barrier and stop.
+- Assume a demo page that is public and has conventional form controls (input, textarea, button). No login should be required.
+- Keep the number of tool types small to reduce model confusion and improve reliability.
+- Prioritize deterministic plans; avoid long chains of speculative actions.
+
+3.4 Success Criteria (MVP)
+- A single typed command fills three fields (name, email, message) and submits in < 15 seconds end-to-end on event Wi-Fi.
+- One validation error is detected and corrected automatically before a second submit.
+- The agent narrates its actions briefly (“Focusing Name… Typing… Submitting…”) via text output (voice optional later).
+
+3.5 Post-MVP (Nice-to-Haves, Only If Time Remains)
+- Speech-to-text and text-to-speech front end for hands-free interaction.
+- Basic page summarization (“What fields are on this form?”).
+- Support for selecting between multiple forms on the same page (“Use the ‘Contact Sales’ form”).
+
